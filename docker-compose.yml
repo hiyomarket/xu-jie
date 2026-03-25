@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # 前端 Next.js
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    depends_on:
+      - server
+    networks:
+      - xu-jie-network
+
+  # 後端 NestJS
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://xu_jie:xu_jie_password@db:3306/xu_jie
+      - JWT_SECRET=${JWT_SECRET:-xu-jie-secret-key-change-in-prod}
+      - CLIENT_URL=http://localhost:3000
+    depends_on:
+      - db
+    networks:
+      - xu-jie-network
+
+  # 資料庫 MySQL
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=xu_jie
+      - MYSQL_USER=xu_jie
+      - MYSQL_PASSWORD=xu_jie_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - xu-jie-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Nginx 反向代理
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - client
+      - server
+    networks:
+      - xu-jie-network
+
+networks:
+  xu-jie-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

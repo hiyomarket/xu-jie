@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  username      String    @unique
+  password      String
+  role          String    @default("user") // user, admin
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // 遊戲相關
+  gold          Int       @default(1000)    // 初始金幣
+  level         Int       @default(1)
+  exp           Int       @default(0)
+  
+  pets          Pet[]
+  inventory     Inventory[]
+}
+
+model Pet {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  
+  // 寵物基礎數據
+  petTypeId     Int
+  name          String
+  level         Int       @default(1)
+  exp           Int       @default(0)
+  
+  // 檔數資質
+  hp            Int       @default(10)
+  mp            Int       @default(10)
+  strength      Int       @default(5)
+  intelligence  Int       @default(5)
+  agility       Int       @default(5)
+  endurance     Int       @default(5)
+  
+  // 戰鬥
+  hpMax         Int       @default(10)
+  mpMax         Int       @default(10)
+  attack        Int       @default(5)
+  defense       Int       @default(3)
+  speed         Int       @default(5)
+  
+  // 變異
+  isVariant     Boolean   @default(false)
+  variantBonus  Json?     // 變異加成
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model PetType {
+  id            Int       @id @default(autoincrement())
+  name          String    // 火蜘蛛、水精靈、等
+  element       String    // fire, water, earth, wind
+  baseHp        Int
+  baseMp        Int
+  baseStr       Int
+  baseInt       Int
+  baseAgi       Int
+  baseEnd       Int
+  
+  description   String?
+  image         String?
+  
+  pets          Pet[]
+}
+
+model Item {
+  id            Int       @id @default(autoincrement())
+  name          String
+  type          String    // weapon, armor, consumable, material
+  description   String?
+  effect        Json?     // 效果描述
+  
+  rarity        String    @default("common") // common, rare, epic, legendary
+  
+  createdAt     DateTime  @default(now())
+}
+
+model Inventory {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  
+  itemId        Int
+  item          Item      @relation(fields: [itemId], references: [id])
+  
+  quantity      Int       @default(1)
+  
+  createdAt     DateTime  @default(now())
+  
+  @@unique([userId, itemId])
+}
