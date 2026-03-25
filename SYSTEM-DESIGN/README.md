@@ -1,173 +1,97 @@
-# 墟界技術架構文件
+# 墟界 — 系統設計文件
 
-## 📋 專案概述
-
-- **專案名稱**：墟界 (XuJie)
-- **遊戲類型**：魔力寶貝風格半放置型網頁遊戲
-- **技術棧**：NestJS + tRPC + Next.js + MySQL + Docker
+> 建立時間：2026/03/25 10:56 | 建立者：架站顧問
 
 ---
 
-## 🏗️ 系統架構
-
-```
-┌──────────────┐     ┌─────────────┐     ┌──────────────┐
-│   Client     │────▶│   Nginx     │────▶│  Next.js    │
-│  (Browser)   │     │  Reverse    │     │   :3000     │
-└──────────────┘     │   Proxy     │     └──────┬───────┘
-                     │   :80/443   │            │
-                     └─────────────┘            │
-                               │                │
-                               ▼                ▼
-                      ┌────────────────┐ ┌──────────────┐
-                      │    Let's       │ │   NestJS     │
-                      │   Encrypt      │ │   :4000      │
-                      └────────────────┘ └──────┬───────┘
-                                                 │
-                                        ┌────────▼────────┐
-                                        │   MySQL :3306   │
-                                        │   xu_jie        │
-                                        └─────────────────┘
-```
-
----
-
-## 📁 目錄結構
+## 專案結構
 
 ```
 xu-jie/
-├── docker-compose.yml      # Docker 部署配置
-├── nginx/
-│   └── nginx.conf          # Nginx 反向代理配置
-├── server/                  # 後端 NestJS
+├── server/              # NestJS 後端
 │   ├── src/
-│   │   ├── main.ts         # 入口
-│   │   ├── app.module.ts   # 主模組
-│   │   ├── auth/           # 認證模組
-│   │   ├── user/           # 用戶模組
-│   │   ├── pet/            # 寵物模組
-│   │   ├── prisma/         # Prisma 服務
-│   │   └── trpc/           # tRPC 配置
-│   ├── prisma/
-│   │   └── schema.prisma   # 資料庫結構
-│   ├── Dockerfile
-│   └── package.json
-├── client/                  # 前端 Next.js
-│   ├── src/
-│   │   ├── app/            # Next.js App Router
-│   │   │   ├── page.tsx    # 首頁
-│   │   │   ├── auth/       # 登入/註冊
-│   │   │   └── dashboard/  # 遊戲儀表板
-│   │   ├── components/     # React 元件
-│   │   └── lib/            # 工具函式
-│   ├── Dockerfile
-│   └── package.json
-└── SYSTEM-DESIGN/
-    └── README.md           # 本文件
+│   │   ├── auth/        # 認證模組（JWT）
+│   │   ├── user/        # 用戶模組
+│   │   ├── pet/         # 寵物模組
+│   │   └── trpc/        # tRPC 整合
+│   ├── prisma/          # Prisma ORM Schema
+│   └── Dockerfile
+├── client/              # Next.js 14 前端
+│   ├── src/app/
+│   │   ├── auth/        # 登入/註冊頁面
+│   │   └── dashboard/   # 主儀表板
+│   └── Dockerfile
+├── nginx/               # Nginx 反向代理設定
+├── docker-compose.yml   # Docker 容器編排
+└── SYSTEM-DESIGN/       # 本文件
 ```
 
 ---
 
-## 🔧 API 設計
+## 技術棧
 
-### 認證 API (`/api/auth`)
-
-| 方法 | 路徑 | 說明 |
+| 層次 | 技術 | 狀態 |
 |------|------|------|
-| POST | /auth/register | 用戶註冊 |
-| POST | /auth/login | 用戶登入 |
-| POST | /auth/logout | 用戶登出 |
-| POST | /auth/refresh | 刷新 Token |
+| 前端框架 | Next.js 14 + Tailwind CSS | ✅ |
+| 後端框架 | NestJS + tRPC | ✅ |
+| ORM | Prisma ORM | ✅ |
+| 資料庫 | MySQL 8 | ✅ |
+| 認證 | JWT（Access + Refresh Token）| ✅ |
+| 容器化 | Docker Compose | ✅ |
+| 反向代理 | Nginx | ✅ |
 
-### 用戶 API (`/api/user`)
+---
 
-| 方法 | 路徑 | 說明 |
+## API 端點
+
+### 認證
+| 方法 | 端點 | 說明 |
 |------|------|------|
-| GET | /user/me | 取得當前用戶資訊 |
-| GET | /user/profile | 取得用戶完整資料（含寵物） |
+| POST | `/api/auth/register` | 會員註冊 |
+| POST | `/api/auth/login` | 會員登入 |
 
-### 寵物 API (`/api/pet`)
-
-| 方法 | 路徑 | 說明 |
+### 用戶
+| 方法 | 端點 | 說明 |
 |------|------|------|
-| GET | /pet/my | 取得用戶所有寵物 |
-| GET | /pet/types | 取得寵物類型列表 |
-| POST | /pet/catch | 捕捉寵物 |
+| GET | `/api/user/me` | 取得當前用戶資訊 |
+
+### 寵物
+| 方法 | 端點 | 說明 |
+|------|------|------|
+| GET | `/api/pet/types` | 取得寵物類型列表 |
+| POST | `/api/pet/catch` | 捕捉寵物 |
 
 ---
 
-## 🗄️ 資料庫結構
+## Docker Compose 架構
 
-### 用戶表 (User)
-- id, email, username, password
-- role (user/admin)
-- gold (遊戲貨幣)
-- level, exp
-
-### 寵物表 (Pet)
-- userId, petTypeId
-- name, level, exp
-- 檔數資質 (hp, mp, str, int, agi, end)
-- 戰鬥屬性 (hpMax, mpMax, attack, defense, speed)
-- isVariant (變異寵物)
-
-### 寵物類型表 (PetType)
-- name, element (fire/water/earth/wind)
-- baseHp, baseMp, baseStr, baseInt, baseAgi, baseEnd
-
-### 物品表 (Item)
-- name, type, rarity
-- effect (JSON)
-
-### 背包表 (Inventory)
-- userId, itemId, quantity
+```
+client (Next.js)  → Port 3000
+server (NestJS)   → Port 3001
+mysql (Database)   → Port 3306
+nginx (Proxy)      → Port 80/443
+```
 
 ---
 
-## 🔐 認證機制
+## 下一步（待 VPS 就緒後執行）
 
-- **JWT**: Access Token (15分鐘) + Refresh Token (7天)
-- **Cookie**: httpOnly + Secure + SameSite=Strict
-- **密碼加密**: bcrypt
-
----
-
-## 🚀 部署流程
-
-1. **複製專案**
-   ```bash
-   git clone https://github.com/hiyomarket/xu-jie.git
-   cd xu-jie
-   ```
-
-2. **設定環境變數**
-   ```bash
-   cp server/.env.example server/.env
-   # 編輯 .env 填入實際值
-   ```
-
-3. **啟動服務**
-   ```bash
-   docker-compose up -d
-   ```
-
-4. **初始化資料庫**
-   ```bash
-   docker-compose exec server npx prisma migrate dev
-   ```
+1. SSH 部署 Docker 環境
+2. 初始化 MySQL 資料庫結構
+3. 設定 Nginx + Let's Encrypt SSL
+4. 設定網域 DNS 指向
 
 ---
 
-## 📝 待開發功能
+## 等待事項
 
-- [ ] 戰鬥系統
-- [ ] 抽卡/寵物召喚系統
-- [ ] 商店系統
-- [ ] 裝備系統
-- [ ] 任務系統
-- [ ] 排行榜
-- [ ] WebSocket 即時戰鬥
+| 事項 | 負責人 | 狀態 |
+|------|--------|------|
+| Vultr VPS 申請 | Boss | ⏳ |
+| 網域 xujie.io 申請 | Boss | ⏳ |
+| DNS 指向設定 | 架站顧問 | ⏳ 等VPS |
+| Let's Encrypt SSL | 架站顧問 | ⏳ 等VPS |
 
 ---
 
-*最後更新：2026-03-25*
+*最後更新：2026/03/25 10:56*
