@@ -19,3 +19,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+// 預留遊戲音樂功能（待美術素材）
