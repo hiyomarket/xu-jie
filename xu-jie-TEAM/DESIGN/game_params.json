@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-03-28",
+  "growth": {
+    "LV_MAX": 99,
+    "STAT_POINTS_PER_LEVEL": 5,
+    "LV_BASE_HP": 12,
+    "LV_BASE_ATK": 8,
+    "LV_BASE_DEF": 8,
+    "LV_BASE_SPD": 6,
+    "LV_BASE_MATK": 8,
+    "LV_BASE_MDEF": 6,
+    "LV_BASE_HP_CONST": 80,
+    "LV_BASE_ATK_CONST": 15,
+    "LV_BASE_DEF_CONST": 15,
+    "LV_BASE_SPD_CONST": 10
+  },
+  "zhuling": {
+    "INFUSION_MAX": 1000,
+    "INFUSION_WOOD_HP": 30,
+    "INFUSION_FIRE_ATK": 20,
+    "INFUSION_EARTH_DEF": 20,
+    "INFUSION_METAL_SPD": 15,
+    "INFUSION_WATER_MP": 20
+  },
+  "resistance": {
+    "RES_PER_INFUSION": 5,
+    "RES_MAX": 50
+  },
+  "equipment": {
+    "EQUIP_WEAPON_ATK": 100,
+    "EQUIP_WEAPON_MATK": 70,
+    "EQUIP_ARMOR_DEF": 80,
+    "EQUIP_ARMOR_HP": 200,
+    "EQUIP_ACCESSORY_ATK": 20,
+    "EQUIP_ACCESSORY_DEF": 20,
+    "EQUIP_ACCESSORY_SPD": 25
+  },
+  "battleFormula": {
+    "DMG_ATK_MULT": 1.5,
+    "DMG_DEF_MULT": 0.5,
+    "DMG_MIN": 1
+  },
+  "pet": {
+    "PET_ATK_RATIO": 0.35,
+    "PET_DEF_RATIO": 0.40,
+    "PET_HP_RATIO": 0.60
+  },
+  "team": {
+    "TEAM_MAX_SIZE": 3,
+    "BOSS_ACTION_PER_ROUND": 1,
+    "PLAYER_ACTION_PER_ROUND": 2
+  },
+  "bosses": [
+    { "code": "MOB_BOSS_SNAKE",       "name": "荒洞蜥母",           "hp": 8000,  "atk": 95,  "def": 60,  "spd": 30 },
+    { "code": "MOB_BOSS_WOOD",         "name": "朽木妖",             "hp": 6000,  "atk": 65,  "def": 90,  "spd": 25 },
+    { "code": "MOB_BOSS_FIRE",         "name": "熾火蛾",             "hp": 5500,  "atk": 95,  "def": 50,  "spd": 40 },
+    { "code": "MOB_BOSS_ROCK",         "name": "岩甲蚰",             "hp": 9000,  "atk": 75,  "def": 120, "spd": 20 },
+    { "code": "MOB_BOSS_INSECT",       "name": "蟲母・織影",         "hp": 12000, "atk": 120, "def": 80,  "spd": 35 },
+    { "code": "MOB_BOSS_LAVA",         "name": "熔岩蜥祖",           "hp": 10000, "atk": 180, "def": 100, "spd": 28 },
+    { "code": "MOB_BOSS_GOLD",         "name": "玄金刀蛛",           "hp": 15000, "atk": 220, "def": 110, "spd": 42 },
+    { "code": "MOB_BOSS_WATER",        "name": "淵胎水母",           "hp": 11000, "atk": 150, "def": 95,  "spd": 38 },
+    { "code": "MOB_BOSS_TREE",         "name": "枯榮古樹精",         "hp": 13000, "atk": 220, "def": 130, "spd": 22 },
+    { "code": "MOB_BOSS_SNAKE_FIRE",   "name": "熔淵熾鱗蟒",         "hp": 18000, "atk": 300, "def": 140, "spd": 36 },
+    { "code": "MOB_BOSS_ROCK_GIANT",   "name": "太岳磐石巨靈",       "hp": 20000, "atk": 350, "def": 400, "spd": 18 },
+    { "code": "MOB_BOSS_BLADE",        "name": "鍛爐凶疫刃魂",       "hp": 22000, "atk": 450, "def": 160, "spd": 50 },
+    { "code": "MOB_BOSS_LEVIATHAN",    "name": "深淵濁流利維坦",     "hp": 25000, "atk": 400, "def": 180, "spd": 55 },
+    { "code": "MOB_DEATH_KNIGHT",      "name": "死亡騎士（送葬者）",  "hp": 25000, "atk": 200, "def": 200, "spd": 45, "matk": 180, "mdef": 130 }
+  ]
+}

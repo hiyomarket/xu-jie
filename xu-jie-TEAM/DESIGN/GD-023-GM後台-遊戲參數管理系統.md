@@ -165,9 +165,29 @@
 
 ---
 
-## 6. 交付物
+## 6. API 端點設計
+
+| Method | Endpoint | 說明 |
+|--------|----------|------|
+| GET | `/config/growth` | 取得所有成長配置 |
+| PUT | `/config/growth` | 更新成長配置 |
+| GET | `/config/zhuling` | 取得注靈加成配置 |
+| PUT | `/config/zhuling` | 更新注靈加成配置 |
+| GET | `/config/equipment` | 取得裝備加成範圍 |
+| PUT | `/config/equipment` | 更新裝備加成範圍 |
+| GET | `/config/battle-formula` | 取得戰鬥公式係數 |
+| PUT | `/config/battle-formula` | 更新戰鬥公式係數 |
+| GET | `/config/resistance` | 取得五行抗性配置 |
+| PUT | `/config/resistance` | 更新五行抗性配置 |
+| GET | `/player/:id/calculate` | 計算指定玩家屬性（含所有加成） |
+| POST | `/simulator/battle` | 單人/組隊 vs Boss 實戰模擬 |
+| GET | `/simulator/balance-report` | 平衡分析報告（所有Boss） |
+
+## 7. 交付物
 
 - [ ] `admin/` 目錄（GM後台完整代碼）
-- [ ] 獨立於遊戲主程式，可單獨部署
-- [ ] 設定檔：`config/game_params.json`
-- [ ] 說明文件：`admin/README.md`
+- [ ] `config/game_params.json`（所有可調整參數）
+- [ ] `routes/config.js`（API路由）
+- [ ] `services/calculator.js`（屬性計算引擎）
+- [ ] `services/battle_simulator.js`（戰鬥模擬引擎）
+- [ ] `admin/README.md`（使用說明）
