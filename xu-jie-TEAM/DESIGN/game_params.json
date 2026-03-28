@@ -18,15 +18,15 @@
   "zhuling": {
     "INFUSION_MAX": 1000,
     "INFUSION_WOOD_HP": 30,
-    "INFUSION_FIRE_ATK": 20,
-    "INFUSION_EARTH_DEF": 20,
-    "INFUSION_METAL_SPD": 15,
-    "INFUSION_WATER_MP": 20
+    "INFUSION_FIRE_ATK": 30,
+    "INFUSION_EARTH_DEF": 30,
+    "INFUSION_METAL_SPD": 20,
+    "INFUSION_WATER_MP": 20,
+    "INFUSION_WATER_MATK": 20
   },
   "resistance": {
-    "RES_PER_INFUSION": 5,
     "RES_MAX": 50,
-    "FORMULA": "min(50, infusionValue / 20)"
+    "FORMULA": "min(50, infusionValue / 15)"
   },
   "equipment": {
     "EQUIP_WEAPON_ATK": 100,
