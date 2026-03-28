@@ -25,7 +25,8 @@
   },
   "resistance": {
     "RES_PER_INFUSION": 5,
-    "RES_MAX": 50
+    "RES_MAX": 50,
+    "FORMULA": "min(50, infusionValue / 20)"
   },
   "equipment": {
     "EQUIP_WEAPON_ATK": 100,

@@ -154,9 +154,20 @@ function calcPetStats(master, petLv) {
 }
 ```
 
+## 五、抗性計算（最終版）
+
+```javascript
+// 玩家五行抗性
+function calcPlayerResistance(infusionValue) {
+  return Math.min(50, Math.floor(infusionValue / 20));
+}
+// 火注靈=1000 → 火抗 = min(50, 1000÷20) = 50%
+// 火注靈=500  → 火抗 = min(50, 500÷20)  = 25%
+```
+
 ---
 
-## 五、抗性上限
+## 六、抗性上限
 
 | 角色類型 | 抗性上限 |
 |---------|---------|
